@@ -1,13 +1,13 @@
 {
   "name": "ember-fuel",
-  "version": "0.1.1",
-  "homepage": "https://github.com/ryandjurovich/ember-crud",
+  "version": "1.0-beta1",
+  "homepage": "",
   "authors": [
-    "Ryan Djurovich <www@ryandjurovich.com>"
+    "Tyler Andersen <>"
   ],
   "license": "MIT",
-  "description": "The Ember CRUD library includes base Routes and various mixins to help you implement CRUD (Create, Read, Update, Delete) functionality in your Ember app.",
-  "main": [ "dist/ember-crud.prod.js" ],
+  "description": "A multi-purpose Ember add-on that makes it easy to add things such as CRUD, Flash Messages, etc.",
+  "main": [ "Distribute/ember-fuel.prod.js" ],
   "ignore": [
     "node_modules",
     "vendor"
@@ -15,18 +15,17 @@
   "keywords": [
     "ember",
     "emberjs",
-    "crud"
+    "fuel",
+    "crud",
+    "flash"
   ],
   "dependencies": {
-    "noty": "https://github.com/needim/noty.git#v2.2.2",
-    "bootbox": "https://github.com/makeusabrew/bootbox.git#v4.2.0",
-    "cldr": "^1.0",
     "jquery": ">=1.7 <3",
     "handlebars": "^1.0",
     "ember": ">0.9.7 <2"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/ryandjurovich/ember-crud.git"
+    "url": "git://github.com/redfire1539/ember-fuel.git"
   }
 }
