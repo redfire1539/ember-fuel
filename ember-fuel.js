@@ -861,12 +861,12 @@ Ember.Fuel.Grid.View.PageList = Ember.Fuel.Grid.View.ContainerBase.extend({
         if (!this.get('controller')) return [];
 
         var page = this.get('controller.page');
-        var pages = this.get('controller.pages') || [];
+        //var pages = this.get('controller.pages');
         var pagesFrom = Math.max(0, page - this.visiblePages);
         var pagesTo = Math.min(pages, page + this.visiblePages + 1);
         var limit = this.get('controller.limit');
-console.log(pages);
-        //var pages = []; //Already defined above
+
+        var pages = []; //Already defined above
         for (var i = pagesFrom; i < pagesTo; i++) {
             pages.push({
                 index: i,
