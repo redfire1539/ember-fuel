@@ -3,11 +3,11 @@
   "version": "1.0-beta1",
   "homepage": "",
   "authors": [
-    "Tyler Andersen <>"
+    "Tyler Andersen <tyler@jtawebdesigns.com>"
   ],
   "license": "MIT",
   "description": "A multi-purpose Ember add-on that makes it easy to add things such as CRUD, Flash Messages, etc.",
-  "main": [ "Distribute/ember-fuel.prod.js" ],
+  "main": [ "ember-fuel.min.js" ],
   "ignore": [
     "node_modules",
     "vendor"
@@ -17,7 +17,8 @@
     "emberjs",
     "fuel",
     "crud",
-    "flash"
+    "flash",
+    "flash messages"
   ],
   "dependencies": {
     "jquery": ">=1.7 <3",

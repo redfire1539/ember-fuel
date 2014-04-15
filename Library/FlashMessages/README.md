@@ -1,1 +1,0 @@
-Original Code from https://github.com/ryanto/ember-flash-message

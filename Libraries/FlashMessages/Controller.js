@@ -1,4 +1,4 @@
-Ember.Fuel.Flash.Controller = Ember.Controller.extend({
+Ember.Fuel.FlashMessages.Controller = Ember.Controller.extend({
   queuedMessage: null,
   currentMessage: null,
 

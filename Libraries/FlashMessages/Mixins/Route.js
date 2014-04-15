@@ -1,4 +1,4 @@
-Ember.Fuel.Flash.Mixin.Route = Ember.Mixin.create({
+Ember.Fuel.FlashMessages.Mixin.Route = Ember.Mixin.create({
   flashMessage: function(message) {
     var controller = this.controllerFor('flashMessage');
 

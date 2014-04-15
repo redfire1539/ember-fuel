@@ -1,4 +1,4 @@
-Ember.Route.reopen(Ember.Fuel.Flash.Mixin.Route, {
+Ember.Route.reopen(Ember.Fuel.FlashMessages.Mixin.Route, {
   activate: function() {
     this._super.apply(this, arguments);
 
