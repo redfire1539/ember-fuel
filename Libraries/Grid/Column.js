@@ -48,3 +48,10 @@ Ember.Fuel.Grid.column = function (property, options) {
     }
     return column;
 };
+
+Ember.Fuel.Grid.actionColumn = function(template) {
+  if(template)
+    return Ember.Fuel.Grid.Column.create({
+      formatter: '{{partial "' + template + '"}}'
+    });
+};
