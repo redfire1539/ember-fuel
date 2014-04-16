@@ -8,10 +8,13 @@
   "license": "MIT",
   "description": "A multi-purpose Ember add-on that makes it easy to add things such as CRUD, Flash Messages, etc.",
   "ignore": [
+    "Demo",
+    "Libraries",
     "node_modules",
-    "vendor",
     "Tasks",
-    "Libraries"
+    ".*",
+    "*.json",
+    "Gruntfile.js"
   ],
   "keywords": [
     "ember",

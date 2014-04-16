@@ -1,0 +1,12 @@
+{{#link-to "new"}}Create New Record{{/link-to}}
+
+<ul>
+{{#each}}
+	<li>
+		{{#link-to "view" this}}{{firstName}} {{middleName}}{{/link-to}}
+		&nbsp;&nbsp;({{#link-to "edit" this}}Edit{{/link-to}})
+		&nbsp;&nbsp;(<a href="javascript:void(0)" {{action "efcDelete" this}}>Delete</a>)</li>
+{{/each}}
+</ul>
+
+{{view Ember.Crud.Table}}

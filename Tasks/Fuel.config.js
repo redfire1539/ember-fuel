@@ -26,6 +26,17 @@ module.exports = function(grunt){
 		},
 		jshint: {
 			fuel: ['ember-fuel.js']
+		},
+		copy: {
+			toDemo: {
+				files: [
+					{
+						expand: true,
+						src: ['ember-fuel*.js'],
+						dest: 'Demo/public/'
+					}
+				]
+			}
 		}
 	}
 };
