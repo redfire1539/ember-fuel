@@ -9,4 +9,16 @@
 {{/each}}
 </ul>
 
-{{view Ember.Crud.Table}}
+
+<div class="dl-table">
+	<dl class="header">
+		<dt>First Name</dt><dd>&nbsp;</dd>
+		<dt>Middle Name</dt><dd>&nbsp;</dd>
+	</dl>
+	{{#each}}
+	<dl>
+		<dt>First Name</dt><dd>{{firstName}}</dd>
+		<dt>Middle Name</dt><dd>{{middleName}}</dd>
+	</dl>
+	{{/each}}
+</div>

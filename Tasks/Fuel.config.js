@@ -1,5 +1,6 @@
 module.exports = function(grunt){
 	return {
+
 		neuter: {
 			options: {
 				basePath: "Libraries/"
@@ -9,6 +10,7 @@ module.exports = function(grunt){
 				dest: 'ember-fuel.js'
 			}
 		},
+
 		uglify: {
 			fuel: {
 				options: {
@@ -24,9 +26,11 @@ module.exports = function(grunt){
 				}
 			}
 		},
+
 		jshint: {
 			fuel: ['ember-fuel.js']
 		},
+
 		copy: {
 			toDemo: {
 				files: [
@@ -37,6 +41,17 @@ module.exports = function(grunt){
 					}
 				]
 			}
+		},
+
+		watch: {
+			fuel: {
+				files: ['Libraries/**/*.js'],
+				tasks: ['fuel'],
+				otions: {
+					spawn: false
+				}
+			}
 		}
-	}
+
+	} /* Above this Line */
 };

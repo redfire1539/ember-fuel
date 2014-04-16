@@ -13,6 +13,8 @@ Ember.libraries.registerCoreLibrary('Ember Fuel', Ember.Fuel.VERSION);
 
 (function() {
 
+/* License Goes Here */
+
 Ember.Crud = Ember.Fuel.Crud = Ember.Namespace.create({ Route: {} });
 
 Ember.Fuel.Crud.DefaultConfig = Ember.Mixin.create({
@@ -86,7 +88,8 @@ Ember.Fuel.Crud.Mixin = Ember.Mixin.create({
 		console.log('Successfully called CRUD action ' + calledAction);
 
 		this.efcCallCallback('success');
-		this.efcRouteReturn();
+		if(calledAction !== 'delete')
+			this.efcRouteReturn();
 	},
 
 	actions: {
@@ -197,6 +200,7 @@ Ember.Fuel.Crud.Table = Ember.CollectionView.extend({
 	}),
 
 	willInsertElement: function() {
+		//this.set('')
 		this.set('content', this.get('controller.model'));
 	}
 });
