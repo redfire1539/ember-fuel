@@ -7,13 +7,14 @@ Ember.Fuel.Crud.DefaultConfig = Ember.Mixin.create({
 		model: null,
 		returnRoute: 'index',
 		callbacks: {
-			success: function() {
+			success: function(calledAction) {
 				console.log('Callback onSuccess!');
 			},
-			error: function() {
+			/* Return TRUE to transition to returnRoute */
+			error: function(calledAction, errorType, errorResponse) {
 				console.log('Callback onError!');
 			},
-			cancel: function() {
+			cancel: function(calledAction) {
 				console.log('Callback onCancel!');
 			},
 			confirmDelete: function() {
@@ -49,10 +50,13 @@ Ember.Fuel.Crud.Mixin = Ember.Mixin.create({
 		return this.get('efcConfig.' + params);
 	},
 
-	efcCallCallback: function(name) {
-		var CallBack = this.efcGetConfig('callbacks.' + name);
+	efcCallCallback: function(callbackName, calledAction) {
+		var Args = Array.prototype.slice.call(arguments);
+		Args.shift();
+
+		var CallBack = this.efcGetConfig('callbacks.' + callbackName);
 		if(CallBack && typeof(CallBack) === 'function')
-			return CallBack.bind(this)();
+			return CallBack.apply(this, Args);
 		else return true;
 	},
 
@@ -65,8 +69,8 @@ Ember.Fuel.Crud.Mixin = Ember.Mixin.create({
 	efcError: function(calledAction, errorMsg) {
 		console.log('Error calling CRUD action "' + calledAction + '" with message: ' + errorMsg);
 
-		this.efcCallCallback('error');
-		this.efcRouteReturn();
+		var Result = this.efcCallCallback('error', calledAction, responseObj.status, JSON.parse(responseObj.responseText));
+		if(Result) this.efcRouteReturn();
 	},
 
 	efcSuccess: function(calledAction) {
@@ -78,6 +82,13 @@ Ember.Fuel.Crud.Mixin = Ember.Mixin.create({
 	},
 
 	actions: {
+		willTransition: function(Transition) {
+      var Model = this.efcGetModel();
+
+      if(Model.get('isDirty'))
+        this.send('efcCancel');
+    },
+
 		efcCancel: function() {
 			var Model = this.efcGetModel('cancel');
 
@@ -155,6 +166,10 @@ Ember.Fuel.Crud.Route.Edit = Ember.Route.extend(
 	Ember.Fuel.Crud.Mixin,
 	Ember.Fuel.Crud.DefaultConfig,
 	{
+    setupController: function(Controller, Model) {
+      this._super(Controller, Model);
+      Controller.set('isEditingRecord', true);
+    },
 		model: function(params) {
 			var Model = this.efcGetConfig('model');
 			if(Model) return this.store.find(Model, params.id);
@@ -174,18 +189,3 @@ Ember.Fuel.Crud.Route.View = Ember.Route.extend(
 		}
 	}
 );
-
-
-
-Ember.Fuel.Crud.Table = Ember.CollectionView.extend({
-	tagName: 'dl',
-	itemViewClass: Ember.View.extend({
-		tagName: '',
-		template: Ember.Handlebars.compile('<dt>Hey</dt><dd>{{view.content.firstName}}</dd>')
-	}),
-
-	willInsertElement: function() {
-		//this.set('')
-		this.set('content', this.get('controller.model'));
-	}
-});
