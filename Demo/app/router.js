@@ -4,6 +4,9 @@ var Router = Ember.Router.extend({
 });
 
 Router.map(function() {
+	this.route('icon-gallery');
+
+
 	this.route('new');
 	this.route('edit', { path: 'edit/:id' });
 	this.route('view', { path: 'view/:id' });

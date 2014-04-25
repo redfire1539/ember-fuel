@@ -15,7 +15,7 @@ Ember.libraries.registerCoreLibrary('Ember Fuel', Ember.Fuel.VERSION);
 
 /* License Goes Here */
 
-Ember.Crud = Ember.Fuel.Crud = Ember.Namespace.create({ Route: {} });
+Ember.Crud = Ember.Fuel.Crud = Ember.Namespace.create({ Route: {}, Validations: {} });
 
 Ember.Fuel.Crud.DefaultConfig = Ember.Mixin.create({
 	efcConfig: {
@@ -41,6 +41,47 @@ Ember.Fuel.Crud.DefaultConfig = Ember.Mixin.create({
 				return true;
 			}
 		}
+	},
+
+	efcHasError: false,
+
+	efcErrors: {
+		/* :[{
+					"fieldName": "Error Message"
+				}]
+		*/
+		formElements: [],
+		/* :[
+					"Error Message"
+				]
+		*/
+		generalErrors: []
+	},
+
+	efcErrorSerializer: function(Errors) {
+		var self = this;
+
+		var errorTemplate = {
+			formElements: [],
+			generalErrors: []
+		};
+
+		this.set('efcHasError', false);
+
+		Errors.forEach(function(Error) {
+			if(Object.keys(Error).length > 1) {
+				var T = {};
+				T[Error.fieldName] = Error.message;
+				errorTemplate.formElements.push(T);
+			}
+			else {
+				errorTemplate.generalErrors.push(Error.message);
+			}
+
+			self.set('efcHasError', true);
+		});
+
+		return errorTemplate;
 	}
 });
 
@@ -48,6 +89,7 @@ Ember.Fuel.Crud.Mixin = Ember.Mixin.create({
 	setupController: function(Controller, Model) {
 		Controller.set('model', Model);
 		Controller.set('efcConfig', this.get('efcConfig'));
+		Controller.set('efcErrors', this.get('efcErrors'));
 		Controller.set('isEditingRecord', false);
 	},
 
@@ -81,16 +123,17 @@ Ember.Fuel.Crud.Mixin = Ember.Mixin.create({
 			else this.transitionTo('index');
 	},
 
-	efcError: function(calledAction, errorMsg) {
-		console.log('Error calling CRUD action "' + calledAction + '" with message: ' + errorMsg);
+	efcError: function(calledAction, responseObj) {
+		var Errors = JSON.parse(responseObj.responseText);
 
-		var Result = this.efcCallCallback('error', calledAction, responseObj.status, JSON.parse(responseObj.responseText));
+		var Serializer = this.get('efcErrorSerializer');
+		this.set('efcErrors', Serializer.bind(this)(Errors));
+
+		var Result = this.efcCallCallback('error', calledAction, responseObj);
 		if(Result) this.efcRouteReturn();
 	},
 
 	efcSuccess: function(calledAction) {
-		console.log('Successfully called CRUD action ' + calledAction);
-
 		this.efcCallCallback('success');
 		if(calledAction !== 'delete')
 			this.efcRouteReturn();
@@ -307,32 +350,22 @@ Ember.Route.reopen(Ember.Fuel.FlashMessages.Mixin.Route, {
 
 (function() {
 
-window.Bootstrap = Ember.Bootstrap = Ember.Fuel.Bootstrap = Ember.Namespace.create({});
+window.Bootstrap = Ember.Bootstrap = Ember.Fuel.Bootstrap = Ember.Namespace.create({ View: {} });
 
-Ember.Fuel.Bootstrap.AlertMessage = Ember.View.extend({
-  classNames: ['alert', 'alert-message'],
-  template: Ember.Handlebars.compile('<a class="close" rel="close" href="#">&times;</a>{{{view.message}}}'),
-  message: null,
-  removeAfter: null,
+Ember.Fuel.Bootstrap.Icon = Ember.Component.extend({
+	tagName: 'span',
+	classNames: ['glyphicon'],
+	classNameBindings: ['iconName'],
 
-  didInsertElement: function() {
-    var removeAfter = get(this, 'removeAfter');
-    if (removeAfter > 0) {
-      Ember.run.later(this, 'destroy', removeAfter);
-    }
-  },
+	icon: null,
 
-  click: function(event) {
-    var target = event.target,
-        targetRel = target.getAttribute('rel');
+	iconName: function() {
+		return 'glyphicon-' + this.get('icon');
+	}.property('icon')
 
-    if (targetRel === 'close') {
-      this.destroy();
-      return false;
-    }
-  }
 });
 
+Ember.Handlebars.helper('bs-icon', Ember.Fuel.Bootstrap.Icon);
 
 
 })();

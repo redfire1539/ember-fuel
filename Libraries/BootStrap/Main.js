@@ -1,26 +1,16 @@
-window.Bootstrap = Ember.Bootstrap = Ember.Fuel.Bootstrap = Ember.Namespace.create({});
+window.Bootstrap = Ember.Bootstrap = Ember.Fuel.Bootstrap = Ember.Namespace.create({ View: {} });
 
-Ember.Fuel.Bootstrap.AlertMessage = Ember.View.extend({
-  classNames: ['alert', 'alert-message'],
-  template: Ember.Handlebars.compile('<a class="close" rel="close" href="#">&times;</a>{{{view.message}}}'),
-  message: null,
-  removeAfter: null,
+Ember.Fuel.Bootstrap.Icon = Ember.Component.extend({
+	tagName: 'span',
+	classNames: ['glyphicon'],
+	classNameBindings: ['iconName'],
 
-  didInsertElement: function() {
-    var removeAfter = get(this, 'removeAfter');
-    if (removeAfter > 0) {
-      Ember.run.later(this, 'destroy', removeAfter);
-    }
-  },
+	icon: null,
 
-  click: function(event) {
-    var target = event.target,
-        targetRel = target.getAttribute('rel');
+	iconName: function() {
+		return 'glyphicon-' + this.get('icon');
+	}.property('icon')
 
-    if (targetRel === 'close') {
-      this.destroy();
-      return false;
-    }
-  }
 });
 
+Ember.Handlebars.helper('bs-icon', Ember.Fuel.Bootstrap.Icon);
